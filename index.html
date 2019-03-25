@@ -82,8 +82,38 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
 
     <script>
+
+
+        var config = {
+            apiKey: "AIzaSyBiVNRWbVtw9bedV4bDQeHsUt7v3E060rI",
+            authDomain: "home-work-d8199.firebaseapp.com",
+            databaseURL: "https://home-work-d8199.firebaseio.com",
+            projectId: "home-work-d8199",
+            storageBucket: "home-work-d8199.appspot.com",
+            messagingSenderId: "414465952998"
+        };
+        firebase.initializeApp(config);
+
+        // Create a variable to reference the database
+        var database = firebase.database();
+
+
+        //Data reference
+        // var trainNameData = '';
+        // var destData = '';
+        // var arrivalData = '';
+        // var freqData = '';
+        // var minutesAwayData = '';
+
+        //        var name = '';
+        //        var destination ='';
+        //        var time = '';
+        //        var frequency = '';
+        //        var minAway = '';
+
 
         function name() {
             document.getElementById('trainNameInput').value = "";
@@ -92,19 +122,19 @@
             document.getElementById('frequency').value = "";
         }
 
-        $('#submitBtn').on('click', function () {
+        $('#submitBtn').on('click', function (event) {
+            event.preventDefault();
 
             var tName = $('#trainNameInput').val().trim();
             var destination = $('#destinationInput').val().trim();
             var bbb = $('#frequency').val();
-            console.log(tFrequency);
             var aaa = $('#ftt').val();
 
 
             //================================================================================
             var firstTime = aaa;
 
-            var tFrequency = bbb
+            var tFrequency = bbb;
 
 
             // First Time (pushed back 1 year to make sure it comes before current time)
@@ -135,18 +165,50 @@
 
 
 
+            // var newTr = $('<tr>').append(
+            //     $('<td>').text(tName),
+            //     $('<td>').text(destination),
+            //     $('<td>').text(tFrequency),
+            //     $('<td>').text(moment(nextTrain).format("hh:mm")),
+            //     $('<td>').text(tMinutesTillTrain)
+
+            // );
+            // $('tbody').append(newTr);
+            // console.log(tName);
+            // console.log(destination);
+            // name();
+
+            database.ref().push({
+                name: tName,
+                destination: destination,
+                time: bbb,
+                frequency: aaa,
+                minAway: tMinutesTillTrain
+            });
+
+        });
+
+        // Firebase watcher + initial loader HINT: .on("value")
+        database.ref().on("child_added", function (snapshot) {
+
+            // Log everything that's coming out of snapshot
+            console.log(snapshot.val());
+            console.log(snapshot.val().name);
+            console.log(snapshot.val().destination);
+            console.log(snapshot.val().time);
+            console.log(snapshot.val().frequency);
+            console.log(snapshot.val().minAway);
+
+
             var newTr = $('<tr>').append(
-                $('<td>').text(tName),
-                $('<td>').text(destination),
-                $('<td>').text(tFrequency),
-                $('<td>').text(moment(nextTrain).format("hh:mm")),
-                $('<td>').text(tMinutesTillTrain)
+                $('<td>').text(snapshot.val().name),
+                $('<td>').text(snapshot.val().destination),
+                $('<td>').text(snapshot.val().time),
+                $('<td>').text(snapshot.val().frequency),
+                $('<td>').text(snapshot.val().minAway)
 
             );
             $('tbody').append(newTr);
-            console.log(tName);
-            console.log(destination);
-            name();
 
         });
 
