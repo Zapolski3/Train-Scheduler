@@ -1,6 +1,20 @@
 #diva {
     background-color:black;
+    
 }
 #author {
     font-style:italic;
+}
+
+#picture {
+    color:white;
+    background-position: center;
+    background-image: url('images/Colin\ Barker\ a\ bit\ smaller.jpg');
+    background-repeat: no-repeat;
+    
+}
+
+#name {
+    color:black;
+    font-weight: bold;
 }
