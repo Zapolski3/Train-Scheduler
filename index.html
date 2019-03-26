@@ -37,6 +37,7 @@
                                 <th scope="col">Frequency (min)</th>
                                 <th scope="col">Next Arrival</th>
                                 <th scope="col">Minutes Away</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,30 +102,10 @@
         var database = firebase.database();
 
 
-        //Data reference
-        // var trainNameData = '';
-        // var destData = '';
-        // var arrivalData = '';
-        // var freqData = '';
-        // var minutesAwayData = '';
-
-        //        var name = '';
-        //        var destination ='';
-        //        var time = '';
-        //        var frequency = '';
-        //        var minAway = '';
-
-
-        function name() {
-            document.getElementById('trainNameInput').value = "";
-            document.getElementById('destinationInput').value = "";
-            document.getElementById('ftt').value = "";
-            document.getElementById('frequency').value = "";
-        }
 
         $('#submitBtn').on('click', function (event) {
             event.preventDefault();
-
+            // name();
             var tName = $('#trainNameInput').val().trim();
             var destination = $('#destinationInput').val().trim();
             var bbb = $('#frequency').val();
@@ -162,21 +143,7 @@
             console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
 
             //================================================================================
-
-
-
-            // var newTr = $('<tr>').append(
-            //     $('<td>').text(tName),
-            //     $('<td>').text(destination),
-            //     $('<td>').text(tFrequency),
-            //     $('<td>').text(moment(nextTrain).format("hh:mm")),
-            //     $('<td>').text(tMinutesTillTrain)
-
-            // );
-            // $('tbody').append(newTr);
-            // console.log(tName);
-            // console.log(destination);
-            // name();
+            
 
             database.ref().push({
                 name: tName,
@@ -186,6 +153,11 @@
                 minAway: tMinutesTillTrain
             });
 
+            $('#trainNameInput').val('');
+            $('#destinationInput').val('');
+            $('#frequency').val('');
+            $('#ftt').val('');
+        
         });
 
         // Firebase watcher + initial loader HINT: .on("value")
@@ -199,6 +171,7 @@
             console.log(snapshot.val().frequency);
             console.log(snapshot.val().minAway);
 
+            
 
             var newTr = $('<tr>').append(
                 $('<td>').text(snapshot.val().name),
@@ -206,12 +179,17 @@
                 $('<td>').text(snapshot.val().time),
                 $('<td>').text(snapshot.val().frequency),
                 $('<td>').text(snapshot.val().minAway)
-
+                
             );
             $('tbody').append(newTr);
 
         });
+      
+        database.ref().on("child_removed", function (snapshot) {
 
+
+        });
+        
 
     </script>
 
